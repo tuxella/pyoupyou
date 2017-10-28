@@ -11,7 +11,7 @@ class Subsidiary(models.Model):
     """Internal company / organisation unit"""
     name = models.CharField(_("Name"), max_length=200, unique=True)
     code = models.CharField(_("Code"), max_length=3, unique=True)
-    responsible = models.ForeignKey('Consultant', null=True)
+    responsible = models.ForeignKey('Interviewer', null=True)
 
     def __str__(self):
         return self.name
@@ -98,22 +98,22 @@ class PyouPyouUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
-class ConsultantManager(models.Manager):
+class InterviewerManager(models.Manager):
     @transaction.atomic
-    def create_consultant(self, trigramme, email, company, full_name):
+    def create_interviewer(self, trigramme, email, company, full_name):
         user = PyouPyouUser.objects.create_user(trigramme, email, full_name=full_name)
-        consultant = self.model(user=user, company=company, productive=True)
-        consultant.save()
-        return consultant
+        interviewer = self.model(user=user, company=company, productive=True)
+        interviewer.save()
+        return interviewer
 
 
-class Consultant(models.Model):
-    """A consultant that can do recruitment meeting"""
+class Interviewer(models.Model):
+    """A interviewer that can do recruitment meeting"""
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company = models.ForeignKey(Subsidiary, verbose_name=_("Subsidiary"))
     productive = models.BooleanField(_("Productive"), default=True)
 
-    objects = ConsultantManager()
+    objects = InterviewerManager()
 
     def __str__(self):
         return self.user.get_full_name()

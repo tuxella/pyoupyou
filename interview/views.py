@@ -17,7 +17,7 @@ from interview.models import Process, Document, Interview, Candidate
 from interview.forms import ProcessCandidateForm, InterviewMinuteForm, ProcessForm, InterviewFormPlan, \
     InterviewFormEditInterviewers, SourceForm, CandidateForm, CloseForm
 
-from ref.models import Consultant
+from ref.models import Interviewer
 
 
 class ProcessTable(tables.Table):
@@ -31,7 +31,7 @@ class ProcessTable(tables.Table):
     contract_type = tables.Column(order_by=('contract_type__name',))
 
     def render_next_action_responsible(self, value):
-        if isinstance(value, Consultant):
+        if isinstance(value, Interviewer):
             return value
         return ', '.join(str(c) for c in value.all())
 
@@ -254,7 +254,7 @@ def dashboard(request):
     a=datetime.datetime.now()
     print(a)
     actions_needed_processes = Process.objects.for_user(request.user).filter(closed_reason=Process.OPEN).prefetch_related('interview_set__interviewers').select_related('subsidiary__responsible')
-    c = request.user.consultant
+    c = request.user.interviewer
     actions_needed_processes = [
         p for p in actions_needed_processes
         if p.next_action_responsible == c or (hasattr(p.next_action_responsible, 'iterator') and c in p.next_action_responsible.iterator())
@@ -266,7 +266,7 @@ def dashboard(request):
     related_processes_table = ProcessTable(related_processes, prefix='r')
 
     subsidiary_processes = Process.objects.for_user(request.user).\
-        filter(Q(end_date__gte=a_week_ago)|Q(closed_reason=Process.OPEN)).filter(subsidiary=request.user.consultant.company)
+        filter(Q(end_date__gte=a_week_ago)|Q(closed_reason=Process.OPEN)).filter(subsidiary=request.user.interviewer.company)
     subsidiary_processes_table = ProcessTable(subsidiary_processes, prefix='s')
 
     config = RequestConfig(request)

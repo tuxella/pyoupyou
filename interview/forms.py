@@ -8,11 +8,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, Column
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from interview.models import Consultant, Interview, Candidate, Process, Sources
+from interview.models import Interviewer, Interview, Candidate, Process, Sources
 
 
-class MultipleConsultantWidget(ModelSelect2MultipleWidget):
-    model = Consultant
+class MultipleInterviewerWidget(ModelSelect2MultipleWidget):
+    model = Interviewer
     search_fields = [
         'user__trigramme__icontains',
         'user__full_name__icontains',
@@ -71,7 +71,7 @@ class InterviewForm(forms.ModelForm):
         fields = ['planned_date', 'interviewers']
 
         widgets = {
-            'interviewers': MultipleConsultantWidget,
+            'interviewers': MultipleInterviewerWidget,
         }
 
     helper = FormHelper()
@@ -102,7 +102,7 @@ class InterviewFormEditInterviewers(InterviewForm):
         model = Interview
         fields = ['interviewers']
         widgets = {
-            'interviewers': MultipleConsultantWidget,
+            'interviewers': MultipleInterviewerWidget,
         }
 
 

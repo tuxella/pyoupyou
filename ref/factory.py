@@ -21,9 +21,9 @@ class PyouPyouUserFactory(factory.django.DjangoModelFactory):
     email = factory.LazyAttribute(lambda u: u.trigramme.lower() + "@mail.com")
 
 
-class ConsultantFactory(factory.django.DjangoModelFactory):
+class InterviewerFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = 'ref.Consultant'
+        model = 'ref.Interviewer'
 
     user = factory.SubFactory(PyouPyouUserFactory)
     company = factory.Iterator(Subsidiary.objects.all())

@@ -7,7 +7,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from pyoupyou.settings import DOCUMENT_TYPE, MINUTE_FORMAT
-from ref.models import Consultant, Subsidiary
+from ref.models import Interviewer, Subsidiary
 
 
 class ContractType(models.Model):
@@ -215,13 +215,13 @@ class Interview(models.Model):
     next_state = models.CharField(max_length=3, choices=ITW_STATE, verbose_name=_("next state"))
     rank = models.IntegerField(verbose_name=_("Rank"), blank=True, null=True)
     planned_date = models.DateTimeField(verbose_name=_("Planned date"), blank=True, null=True)
-    interviewers = models.ManyToManyField(Consultant)
+    interviewers = models.ManyToManyField(Interviewer)
 
     minute = models.TextField(verbose_name=_("Minute"), blank=True)
     minute_format = models.CharField(max_length=3,
                                      choices=MINUTE_FORMAT,
                                      default=MINUTE_FORMAT[0][0])
-    suggested_interviewer = models.ForeignKey(Consultant, verbose_name=_("Suggested interviewer"),
+    suggested_interviewer = models.ForeignKey(Interviewer, verbose_name=_("Suggested interviewer"),
                                               related_name='suggested_interview_for', null=True, blank=True)
     next_interview_goal = models.TextField(verbose_name=_("Next interview goal"), blank=True)
 

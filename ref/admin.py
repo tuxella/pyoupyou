@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from ref.models import Subsidiary, Consultant, PyouPyouUser
+from ref.models import Subsidiary, Interviewer, PyouPyouUser
 
 
 class PyouPyouUserAdmin(UserAdmin):
@@ -27,5 +27,5 @@ class PyouPyouUserAdmin(UserAdmin):
 
 
 admin.site.register(Subsidiary)
-admin.site.register(Consultant)
+admin.site.register(Interviewer)
 admin.site.register(PyouPyouUser, PyouPyouUserAdmin)
