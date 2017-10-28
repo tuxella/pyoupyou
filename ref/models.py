@@ -110,7 +110,8 @@ class InterviewerManager(models.Manager):
 class Interviewer(models.Model):
     """A interviewer that can do recruitment meeting"""
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company = models.ForeignKey(Subsidiary, verbose_name=_("Subsidiary"))
+    company = models.ForeignKey(Subsidiary, verbose_name=_("Subsidiary"),
+                                blank=True, null=True)
     productive = models.BooleanField(_("Productive"), default=True)
 
     objects = InterviewerManager()
