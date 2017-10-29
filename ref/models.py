@@ -114,6 +114,20 @@ class Interviewer(models.Model):
                                 blank=True, null=True)
     productive = models.BooleanField(_("Productive"), default=True)
 
+    CONSULTANT = 'C'
+    EXTERNAL = 'E'
+
+    ITWR_TYPE = (
+        (CONSULTANT, _('CONSULTANT')),
+        (EXTERNAL, _('EXTERNAL'))
+    )
+
+    interviewer_type = models.CharField(max_length=2,
+                                        choices=ITWR_TYPE,
+                                        verbose_name=_("Interviewer Type"),
+                                        blank=True,
+                                        null=True)
+
     objects = InterviewerManager()
 
     def __str__(self):
